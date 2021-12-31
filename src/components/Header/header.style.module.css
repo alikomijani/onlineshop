@@ -1,0 +1,8 @@
+.header_top {
+  display: flex;
+  justify-content: space-between;
+  padding: 25px;
+}
+.header_top_left{
+    display: flex;
+}
