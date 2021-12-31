@@ -1,10 +1,14 @@
 import styles from './product.card.style.module.css'
-const ProductCard = ({ name, price, imageSrc }) => {
+import { Link } from 'react-router-dom'
+const ProductCard = ({ name, price, imageSrc, id }) => {
     return (
         <div className={styles.product_card}>
-            <img className={styles.product_card__image} src={imageSrc} alt="product" />
-            <p className={styles.product_card__title}>{name}</p>
-            <p className={styles.product_card__price}>${price}</p>
+            <Link to={'/products/' + id}>
+                <img className={styles.product_card__image} src={imageSrc} alt="product" />
+                <p className={styles.product_card__title}>{name}</p>
+                <p className={styles.product_card__price}>${price}</p>
+            </Link>
+
         </div>
     )
 }

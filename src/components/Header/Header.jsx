@@ -1,5 +1,5 @@
-import React from 'react'
 import { ReactComponent as SiteLogo } from '../../assets/svg/logo.svg';
+import { Link } from 'react-router-dom';
 import styles from './header.style.module.css'
 const Header = () => {
     return (
@@ -11,7 +11,9 @@ const Header = () => {
                 </div>
                 <div className={styles.header_top_left} >
                     <input />
-                    <SiteLogo />
+                    <Link to='/'>
+                        <SiteLogo />
+                    </Link>
                 </div>
             </div>
 
