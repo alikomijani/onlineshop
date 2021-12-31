@@ -18,11 +18,23 @@ const products = [
 const ProductSingle = () => {
     const { productId } = useParams()
     const [product, setProduct] = useState({})
+    const [error, serError] = useState(false)
     useEffect(() => {
-        fetch('/api/products/' + productId).then(res => res.json()).then(data => {
+        serError(false)
+        fetch('/api/products/' + productId).then(res => {
+            if (res.status === 200) { return res.json() }
+            else {
+                serError(true)
+            }
+        }).then(data => {
             setProduct(data.product)
         })
     }, [productId])
+    if (error){
+        return(
+            'there is a problem please try again'
+        )
+    }
     return (
         <div style={{
             backgroundColor: "#fff",

@@ -1,6 +1,5 @@
-import { createServer, Model } from "miragejs";
+import { createServer, Model,Response } from "miragejs";
 import productImage from "./assets/images/prodcut1.jpg";
-
 export function makeServer({ environment = "test" } = {}) {
   let server = createServer({
     environment,
@@ -132,13 +131,16 @@ export function makeServer({ environment = "test" } = {}) {
 
     routes() {
       this.namespace = "api";
-      this.timing = 2000;
       this.get("/products", (schema) => {
         return schema.products.all();
       });
       this.get("/products/:id", (schema, request) => {
         let id = request.params.id;
-        return schema.products.find(id);
+        const product = schema.products.find(id)
+        if (product){
+          return product
+        }
+        return new Response(404, {}, { error: `Product with id ${id} not found`});
       });
     },
   });
