@@ -1,2 +1,5 @@
 import Home from "./Home/Home";
-export { Home };
+import Cart from "./Cart/Cart";
+import CreateProduct from "./CreateProduct/CreateProduct";
+import UpdateProduct from "./UpdateProduct/UpdateProduct";
+export { Home, Cart,CreateProduct,UpdateProduct };

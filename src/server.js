@@ -1,5 +1,6 @@
-import { createServer, Model,Response } from "miragejs";
+import { createServer, Model, Response } from "miragejs";
 import productImage from "./assets/images/prodcut1.jpg";
+
 export function makeServer({ environment = "test" } = {}) {
   let server = createServer({
     environment,
@@ -134,13 +135,71 @@ export function makeServer({ environment = "test" } = {}) {
       this.get("/products", (schema) => {
         return schema.products.all();
       });
+      this.post("/products", (schema, request) => {
+        const data = JSON.parse(request.requestBody);
+        if (!data.title) {
+          return new Response(
+            400,
+            { some: "header" },
+            { title: ["title cannot be blank"] }
+          );
+        }
+        console.log(data.price);
+        if (parseInt(data.price) < 0) {
+          return new Response(
+            400,
+            { some: "header" },
+            { price: ["price cannot be negative"] }
+          );
+        }
+        let product = schema.products.create({
+          title: data.title,
+          category: data.category,
+          price: data.price,
+          image: productImage,
+          description: data.description,
+        });
+        return product
+      });
+      this.put("/product/:id" , (schema, request) => {
+        const data = JSON.parse(request.requestBody);
+        let product = schema.products.find(request.params.id)
+        if (!data.title) {
+          return new Response(
+            400,
+            { some: "header" },
+            { title: ["title cannot be blank"] }
+          );
+        }
+        console.log(data.price);
+        if (parseInt(data.price) < 0) {
+          return new Response(
+            400,
+            { some: "header" },
+            { price: ["price cannot be negative"] }
+          );
+        }
+        product.update({
+          title: data.title,
+          category: data.category,
+          price: data.price,
+          image: productImage,
+          description: data.description,
+        });
+        return product
+      });
+      this.delete("/product/:id");
       this.get("/products/:id", (schema, request) => {
         let id = request.params.id;
-        const product = schema.products.find(id)
-        if (product){
-          return product
+        const product = schema.products.find(id);
+        if (product) {
+          return product;
         }
-        return new Response(404, {}, { error: `Product with id ${id} not found`});
+        return new Response(
+          404,
+          {},
+          { error: `Product with id ${id} not found` }
+        );
       });
     },
   });
