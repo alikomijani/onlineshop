@@ -35,7 +35,6 @@ function App() {
           />
           <Route path="cart" element={<Cart />} />
         </Route>
-        {/* <Route path="about" element={<div>About page</div>} /> */}
       </Routes>
     </BrowserRouter>
   );

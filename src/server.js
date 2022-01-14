@@ -189,6 +189,13 @@ export function makeServer({ environment = "test" } = {}) {
         return product
       });
       this.delete("/product/:id");
+
+      this.post('/order',(schema , request)=>{
+        const data = JSON.parse(request.requestBody);
+
+
+      })
+
       this.get("/products/:id", (schema, request) => {
         let id = request.params.id;
         const product = schema.products.find(id);
