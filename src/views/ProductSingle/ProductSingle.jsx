@@ -7,6 +7,9 @@ import styles from './product.single.style.module.css'
 import { CategoryItems } from '../../components'
 import productImage from '../../assets/images/prodcut1.jpg'
 import { useParams } from 'react-router-dom';
+import {  useDispatch } from 'react-redux'
+import { addToCart  } from '../../redux/reducers/cart.reducer'
+
 const products = [
     { id: 1, title: 'kafhs meli', price: 30000, image: productImage, description: 'kafh ba davam' },
     { id: 2, title: 'kafhs meli', price: 30000, image: productImage, description: 'kafh ba davam' },
@@ -16,6 +19,7 @@ const products = [
 ]
 
 const ProductSingle = () => {
+    const dispatch = useDispatch()
     const { productId } = useParams()
     const [product, setProduct] = useState({})
     const [error, serError] = useState(false)
@@ -72,7 +76,7 @@ const ProductSingle = () => {
                 <div className={styles.product_seller}>
                     <div>{product.price}</div>
                     <div>
-                        <button className={styles.product_add_to_cart}>add to cart</button>
+                        <button onClick={()=>dispatch(addToCart(product))} className={styles.product_add_to_cart}>add to cart</button>
                     </div>
                 </div>
             </section>
