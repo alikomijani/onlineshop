@@ -4,7 +4,6 @@ const Footer = () => {
     return (
         <footer>
             <div className={styles.wrapper}>
-                
                 <div>link</div>
                 <div>about</div>
             </div>

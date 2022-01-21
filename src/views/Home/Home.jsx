@@ -1,10 +1,15 @@
 import { useEffect, useState } from 'react'
 import { HomeBanners, CategoryItems, Container, OfferBanner } from '../../components'
+import { getProducts } from '../../api/products.api'
 import styles from './home.style.module.css'
 const Home = () => {
     const [products, setProducts] = useState([])
     useEffect(() => {
-        fetch('/api/products').then(res => res.json()).then(data => setProducts(data.products))
+        getProducts()
+            .then(data => setProducts(data.products))
+            .catch(
+                res => alert(res.status)
+            )
     }, [])
     return (
         <div>

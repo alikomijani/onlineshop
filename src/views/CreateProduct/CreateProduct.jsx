@@ -1,6 +1,7 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
-
+import axios from '../../api/setup'
+import { createProduct } from '../../api/products.api'
 const CreateProduct = () => {
     const nav = useNavigate()
     const [state, setState] = React.useState({
@@ -20,19 +21,14 @@ const CreateProduct = () => {
     }
     const onSubmit = async (e) => {
         e.preventDefault()
-        const res = await fetch('/api/products', {
-            method: 'post',
-            body: JSON.stringify(state)
+        createProduct(state)
+        .then(data => { })
+        .catch(res => {
+            if (res.status === 400) {
+                setErrors(res.data)
+            }
         })
-        const data = await res.json()
-        if (res.status === 201) {
-            alert('success')
-            nav('/')
 
-        } else {
-            alert('error')
-            setErrors(data)
-        }
     }
     return (
         <div>
