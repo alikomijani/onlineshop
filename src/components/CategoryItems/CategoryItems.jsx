@@ -9,8 +9,8 @@ const CategoryItems = ({ title, products = [] }) => {
         let cancel = setInterval(() => {
             i++;
             if (i < Math.abs(scrollOffset)) {
-                parent.current.scrollLeft -= -1 * scrollOffset/Math.abs(scrollOffset);
-            }else{
+                parent.current.scrollLeft -= -1 * scrollOffset / Math.abs(scrollOffset);
+            } else {
                 clearInterval(cancel)
             }
         }, 1)

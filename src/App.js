@@ -1,14 +1,15 @@
 import React from "react";
 import "./App.css";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import { Home, Cart, CreateProduct, UpdateProduct } from "./views";
-import log from "./services/log";
+import Auth from "./api/localStorage";
 const MainLayout = React.lazy(() => import("./Layouts/MainLayout/MainLayout"));
+const Login = React.lazy(() => import("./views/Login/Login"));
+const Profile = React.lazy(() => import("./views/Profile/Profile"));
 const ProductSingle = React.lazy(() =>
   import("./views/ProductSingle/ProductSingle")
 );
 function App() {
-  log('lomij')
   return (
     <BrowserRouter>
       <Routes>
@@ -21,6 +22,8 @@ function App() {
           }
         >
           <Route index element={<Home />} />
+          <Route path="login" element={<Login />} />
+          <Route path="profile" element={<Profile />} />
           <Route path="products/create" element={<CreateProduct />} />
           <Route
             path="products/:productId/update"
@@ -42,3 +45,11 @@ function App() {
 }
 
 export default App;
+
+const PrivateRoute = ({ children }) => {
+  if (Auth.checkLogin()) {
+    return <>{children}</>;
+  } else {
+    return <Navigate to={"/login"} replace={true} />;
+  }
+};

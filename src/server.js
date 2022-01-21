@@ -2,19 +2,26 @@ import { createServer, Model, Response } from "miragejs";
 import productImage from "./assets/images/prodcut1.jpg";
 
 export function makeServer({ environment = "test" } = {}) {
+
   let server = createServer({
     environment,
     models: {
       product: Model,
+      user: Model,
     },
     seeds(server) {
+      server.create("user", {
+        id: 1,
+        username: "ali",
+        password: 123,
+      });
       server.create("product", {
         id: 1,
         category: "shoes",
         title: "product1",
         price: 100,
         image: productImage,
-        description: "samp;e",
+        description: "sample",
       });
       server.create("product", {
         id: 2,
@@ -22,7 +29,7 @@ export function makeServer({ environment = "test" } = {}) {
         title: "product2",
         price: 100,
         image: productImage,
-        description: "samp;e",
+        description: "sample",
       });
       server.create("product", {
         id: 3,
@@ -30,7 +37,7 @@ export function makeServer({ environment = "test" } = {}) {
         title: "product3",
         price: 100,
         image: productImage,
-        description: "samp;e",
+        description: "sample",
       });
       server.create("product", {
         id: 4,
@@ -38,7 +45,7 @@ export function makeServer({ environment = "test" } = {}) {
         title: "product4",
         price: 100,
         image: productImage,
-        description: "samp;e",
+        description: "sample",
       });
       server.create("product", {
         id: 5,
@@ -46,7 +53,7 @@ export function makeServer({ environment = "test" } = {}) {
         title: "product5",
         price: 100,
         image: productImage,
-        description: "samp;e",
+        description: "sample",
       });
       server.create("product", {
         id: 6,
@@ -54,7 +61,7 @@ export function makeServer({ environment = "test" } = {}) {
         title: "product6",
         price: 100,
         image: productImage,
-        description: "samp;e",
+        description: "sample",
       });
       server.create("product", {
         id: 7,
@@ -62,7 +69,7 @@ export function makeServer({ environment = "test" } = {}) {
         title: "product7",
         price: 100,
         image: productImage,
-        description: "samp;e",
+        description: "sample",
       });
       server.create("product", {
         id: 8,
@@ -70,7 +77,7 @@ export function makeServer({ environment = "test" } = {}) {
         title: "product8",
         price: 100,
         image: productImage,
-        description: "samp;e",
+        description: "sample",
       });
       server.create("product", {
         id: 9,
@@ -78,7 +85,7 @@ export function makeServer({ environment = "test" } = {}) {
         title: "product9",
         price: 100,
         image: productImage,
-        description: "samp;e",
+        description: "sample",
       });
       server.create("product", {
         id: 10,
@@ -86,7 +93,7 @@ export function makeServer({ environment = "test" } = {}) {
         title: "product10",
         price: 100,
         image: productImage,
-        description: "samp;e",
+        description: "sample",
       });
       server.create("product", {
         id: 11,
@@ -94,7 +101,7 @@ export function makeServer({ environment = "test" } = {}) {
         title: "product11",
         price: 100,
         image: productImage,
-        description: "samp;e",
+        description: "sample",
       });
       server.create("product", {
         id: 12,
@@ -102,7 +109,7 @@ export function makeServer({ environment = "test" } = {}) {
         title: "product12",
         price: 100,
         image: productImage,
-        description: "samp;e",
+        description: "sample",
       });
       server.create("product", {
         id: 13,
@@ -110,7 +117,7 @@ export function makeServer({ environment = "test" } = {}) {
         title: "product13",
         price: 100,
         image: productImage,
-        description: "samp;e",
+        description: "sample",
       });
       server.create("product", {
         id: 14,
@@ -118,7 +125,7 @@ export function makeServer({ environment = "test" } = {}) {
         title: "product14",
         price: 100,
         image: productImage,
-        description: "samp;e",
+        description: "sample",
       });
       server.create("product", {
         id: 15,
@@ -126,12 +133,53 @@ export function makeServer({ environment = "test" } = {}) {
         title: "product15",
         price: 100,
         image: productImage,
-        description: "samp;e",
+        description: "sample",
       });
     },
 
     routes() {
+      this.timing = 3000
       this.namespace = "api";
+      this.post("/auth/register", (schema, request) => {
+        const data = JSON.parse(request.requestBody);
+        let user = schema.users.create({
+          username: data.username,
+          password: data.password,
+        });
+        return user;
+      });
+      this.post("/auth/login", (schema, request) => {
+        const user_data = JSON.parse(request.requestBody);
+        let user = schema.users.findBy({
+          username: user_data.username,
+          password: user_data.password,
+        });
+        if (user) {
+          return {
+            accessToken: 1,
+            refreshToken: 2,
+          };
+        } else {
+          return new Response(
+            400,
+            { some: "header" },
+            { none_filed_error: ["user credential is failed"] }
+          );
+        }
+      });
+      this.post("/auth/refresh", (schema, request) => {
+        const data = JSON.parse(request.requestBody);
+        if (data.refreshToken === 2) {
+          return {
+            accessToken: 1,
+          };
+        } else
+          return new Response(
+            401,
+            { some: "header" },
+            { none_filed_error: ["user credential is failed"] }
+          );
+      });
       this.get("/products", (schema) => {
         return schema.products.all();
       });
@@ -159,11 +207,11 @@ export function makeServer({ environment = "test" } = {}) {
           image: productImage,
           description: data.description,
         });
-        return product
+        return product;
       });
-      this.put("/product/:id" , (schema, request) => {
+      this.put("/product/:id", (schema, request) => {
         const data = JSON.parse(request.requestBody);
-        let product = schema.products.find(request.params.id)
+        let product = schema.products.find(request.params.id);
         if (!data.title) {
           return new Response(
             400,
@@ -186,15 +234,13 @@ export function makeServer({ environment = "test" } = {}) {
           image: productImage,
           description: data.description,
         });
-        return product
+        return product;
       });
       this.delete("/product/:id");
 
-      this.post('/order',(schema , request)=>{
+      this.post("/order", (schema, request) => {
         const data = JSON.parse(request.requestBody);
-
-
-      })
+      });
 
       this.get("/products/:id", (schema, request) => {
         let id = request.params.id;

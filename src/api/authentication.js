@@ -3,9 +3,9 @@ import axios from "axios";
 export const login = (data) => {
   return new Promise((resolve, reject) => {
     axios
-      .post("/auth/sign-in", data)
-      .then((data) => {
-        resolve(data);
+      .post("/api/auth/login", data)
+      .then((res) => {
+        resolve(res.data);
       })
       .catch((e) => {
         reject(e.response);
@@ -16,7 +16,7 @@ export const login = (data) => {
 export const register = (data) => {
   return new Promise((resolve, reject) => {
     axios
-      .post("/auth/sign-up", data)
+      .post("/api/auth/register", data)
       .then((data) => {
         resolve(data);
       })

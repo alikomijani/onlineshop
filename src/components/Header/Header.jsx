@@ -2,10 +2,10 @@ import { useState } from 'react'
 import { ReactComponent as SiteLogo } from '../../assets/svg/logo.svg';
 import { Link } from 'react-router-dom';
 import styles from './header.style.module.css'
-import { BiUser } from 'react-icons/bi'
-import { BiCart } from 'react-icons/bi'
+import { BiCart, BiLogOut, BiUser } from 'react-icons/bi'
 import { useSelector } from 'react-redux'
 import { CartMenu } from '..';
+import Auth from '../../api/localStorage';
 const Header = () => {
     const [show, setShow] = useState(false)
     const total_count = useSelector(
@@ -24,22 +24,34 @@ const Header = () => {
 
                             }}><BiCart size={'28px'} />
                             <div style={{
-                                display:'inline-block',
-                                backgroundColor:'red',
-                                color:'white',
-                                borderRadius:"20px",
-                                padding:3,
-                                fontWeight:700,
-                                position:'absolute',
-                                left:0,
-                                top:15
+                                display: 'inline-block',
+                                backgroundColor: 'red',
+                                color: 'white',
+                                borderRadius: "20px",
+                                padding: 3,
+                                fontWeight: 700,
+                                position: 'absolute',
+                                left: 0,
+                                top: 15
                             }}>
                                 {total_count}
 
                             </div>
                             <CartMenu show={show} setShow={setShow} />
                         </div>
-                        <div><BiUser size={'28px'} /></div>
+                        <div>
+                            <Link to='/profile'>
+                                <BiUser size={'28px'} />
+                            </Link>
+                        </div>
+                        <div style={{
+                            cursor:'pointer'
+                        }} onClick={()=>{
+                            Auth.logout()
+                            
+                        }}>
+                            <BiLogOut size={'28px'} />
+                        </div>
                     </div>
                     <div className={styles.header_top_left} >
                         <input className={styles.input} />

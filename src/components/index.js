@@ -5,6 +5,8 @@ import CategoryItems from "./CategoryItems/CategoryItems";
 import Container from "./Container/Container";
 import OfferBanner from "./OfferBanner/OfferBanner";
 import CartMenu from "./CartMenu/CartMenu";
+import withAuth from "./PrivateRoute/PrivateRoute";
+import withSpinner from "./withSpinner/withSpinner";
 export {
   HomeBanners,
   ProductList,
@@ -13,4 +15,6 @@ export {
   Container,
   OfferBanner,
   CartMenu,
+  withAuth,
+  withSpinner
 };

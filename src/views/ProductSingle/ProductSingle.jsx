@@ -1,15 +1,13 @@
-import { useEffect, useState } from 'react'
 import { BiHeart } from "react-icons/bi";
 import { BiShareAlt } from "react-icons/bi";
 import { BiBellPlus } from "react-icons/bi";
 import { Link } from 'react-router-dom';
 import styles from './product.single.style.module.css'
-import { CategoryItems } from '../../components'
+import { CategoryItems  , withSpinner} from '../../components'
 import productImage from '../../assets/images/prodcut1.jpg'
-import { useParams } from 'react-router-dom';
 import {  useDispatch } from 'react-redux'
+import { getProduct } from '../../api/products.api';
 import { addToCart  } from '../../redux/reducers/cart.reducer'
-
 const products = [
     { id: 1, title: 'kafhs meli', price: 30000, image: productImage, description: 'kafh ba davam' },
     { id: 2, title: 'kafhs meli', price: 30000, image: productImage, description: 'kafh ba davam' },
@@ -18,27 +16,8 @@ const products = [
     { id: 5, title: 'kafhs meli', price: 30000, image: productImage, description: 'kafh ba davam' },
 ]
 
-const ProductSingle = () => {
+const ProductSingle = ({product}) => {
     const dispatch = useDispatch()
-    const { productId } = useParams()
-    const [product, setProduct] = useState({})
-    const [error, serError] = useState(false)
-    useEffect(() => {
-        serError(false)
-        fetch('/api/products/' + productId).then(res => {
-            if (res.status === 200) { return res.json() }
-            else {
-                serError(true)
-            }
-        }).then(data => {
-            setProduct(data.product)
-        })
-    }, [productId])
-    if (error){
-        return(
-            'there is a problem please try again'
-        )
-    }
     return (
         <div style={{
             backgroundColor: "#fff",
@@ -52,7 +31,7 @@ const ProductSingle = () => {
             }}>
                 <div className={styles.product_left_side}>
                     <div className={styles.product_tools}>
-                        <div>
+                        <div >
                             <BiHeart size={'32px'} />
                         </div>
                         <div>
@@ -96,4 +75,4 @@ const ProductSingle = () => {
     )
 }
 
-export default ProductSingle
+export default withSpinner (ProductSingle , getProduct)
